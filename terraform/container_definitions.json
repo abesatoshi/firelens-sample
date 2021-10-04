@@ -1,0 +1,37 @@
+[
+  {
+    "essential": true,
+    "image": "xxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/satoshi-abe-example-firelens:latest",
+    "name": "log_router",
+    "firelensConfiguration": {
+        "type": "fluentbit",
+        "options": {
+            "config-file-type": "file",
+            "config-file-value": "/fluent-bit/firelens.conf"
+        }
+    },
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-region": "ap-northeast-1",
+            "awslogs-stream-prefix": "satoshi-abe-firelens-container",
+            "awslogs-group": "/ecs/satoshi-abe-example"
+        }
+    },
+    "memoryReservation": 50
+ },
+ {
+    "name": "satoshi-abe-example",
+    "image": "xxxxxxxxxx.dkr.ecr.ap-northeast-1.amazonaws.com/satoshi-abe-example-app:latest",
+    "essential": true,
+    "logConfiguration": {
+      "logDriver":"awsfirelens"
+    },
+    "portMappings": [
+      {
+        "protocol": "tcp",
+        "containerPort": 8000
+      }
+    ]
+  }
+]
